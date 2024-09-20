@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#zodiac-clock-container {
+    position: relative;
+    width: 80vmin;
+    height: 80vmin;
+    max-width: 400px;
+    max-height: 400px;
+}
+
+#zodiac-clock {
+    width: 100%;
+    height: 100%;
+}
+
+#static-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.vertical-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background-color: #000;
+}
+
+.horizontal-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+}
+
+#soulmate-text {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+.zodiac-slice {
+    cursor: grab;
+}
+
+.zodiac-slice:active {
+    cursor: grabbing;
+}
+
+.highlight-circle {
+    fill: rgba(0, 255, 0, 0.2);
+    stroke: #00ff00;
+    stroke-width: 2;
+}
