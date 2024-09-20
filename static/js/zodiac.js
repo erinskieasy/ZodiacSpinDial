@@ -199,11 +199,17 @@ document.addEventListener("touchend", (event) => {
     onMouseUp();
 });
 
-// Add new function to toggle purple circles
+// Modified function to toggle purple circles
 function togglePurpleCircles() {
     const purpleCircles = document.querySelectorAll('.purple-circle');
+    let isVisible = purpleCircles[0].getAttribute('visibility') !== 'hidden';
+    
     purpleCircles.forEach(circle => {
-        circle.style.display = circle.style.display === 'none' ? '' : 'none';
+        if (isVisible) {
+            circle.setAttribute('visibility', 'hidden');
+        } else {
+            circle.setAttribute('visibility', 'visible');
+        }
     });
 }
 
