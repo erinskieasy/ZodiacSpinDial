@@ -79,6 +79,8 @@ function createZodiacSlice(sign, index) {
     symbol.setAttribute("dominant-baseline", "middle");
     symbol.setAttribute("font-size", "20");
     symbol.textContent = zodiacSymbols[sign];
+    symbol.setAttribute("class", "zodiac-symbol");
+    symbol.style.transformOrigin = `${symbolX}px ${symbolY}px`;
     slice.appendChild(symbol);
 
     return slice;
@@ -177,6 +179,12 @@ function rotateZodiac(rotation) {
     const slices = document.getElementById("zodiac-slices");
     slices.style.transition = isDragging ? 'none' : 'transform 0.3s ease-out';
     slices.style.transform = `rotate(${rotation}deg)`;
+    
+    // Rotate zodiac symbols in the opposite direction to keep them upright
+    const symbols = document.querySelectorAll('.zodiac-symbol');
+    symbols.forEach(symbol => {
+        symbol.style.transform = `rotate(${-rotation}deg)`;
+    });
 }
 
 svg.addEventListener("mousedown", onMouseDown);
