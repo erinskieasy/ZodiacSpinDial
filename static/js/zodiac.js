@@ -101,7 +101,7 @@ function addHighlightCircles() {
 
 function updateSoulmate() {
     const rotation = getCurrentRotation();
-    const index = Math.round(rotation / 30) % 12;
+    const index = Math.floor((rotation + 15) / 30) % 12;
     const soulmate = zodiacSigns[index];
     document.getElementById("soulmate-sign").textContent = soulmate;
 }
@@ -117,7 +117,8 @@ function getCurrentRotation() {
 }
 
 function snapToNearestSign(rotation) {
-    const snappedRotation = Math.round(rotation / 30) * 30;
+    const normalizedRotation = (rotation + 360) % 360;
+    const snappedRotation = Math.round(normalizedRotation / 30) * 30;
     return snappedRotation;
 }
 
@@ -159,9 +160,7 @@ function rotateZodiac(rotation, snap = false) {
     const slices = document.getElementById("zodiac-slices");
     slices.style.transition = snap ? 'transform 0.3s ease-out' : 'none';
     slices.style.transform = `rotate(${rotation}deg)`;
-    if (snap) {
-        currentRotation = rotation;
-    }
+    currentRotation = rotation;
 }
 
 svg.addEventListener("mousedown", onMouseDown);
