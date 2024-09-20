@@ -26,6 +26,7 @@ function createZodiacClock() {
 
     const sliceGroup = document.createElementNS(svgNS, "g");
     sliceGroup.setAttribute("id", "zodiac-slices");
+    sliceGroup.style.transformOrigin = `${centerX}px ${centerY}px`;
     svg.appendChild(sliceGroup);
 
     zodiacSigns.forEach((sign, index) => {
@@ -107,9 +108,9 @@ function updateSoulmate() {
 
 function getCurrentRotation() {
     const slices = document.getElementById("zodiac-slices");
-    const transform = slices.getAttribute("transform");
+    const transform = slices.style.transform;
     if (transform) {
-        const match = transform.match(/rotate\(([-\d.]+)/);
+        const match = transform.match(/rotate\(([-\d.]+)deg\)/);
         return match ? parseFloat(match[1]) : 0;
     }
     return 0;
