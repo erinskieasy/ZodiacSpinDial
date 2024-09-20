@@ -35,7 +35,6 @@ function createZodiacClock() {
     });
 
     addHighlightCircles();
-    initializeClockPosition();
 }
 
 function createZodiacSlice(sign, index) {
@@ -121,13 +120,8 @@ function snapToNearestSign(rotation) {
     return Math.round((rotation - 15) / 30) * 30 + 15;
 }
 
-function initializeClockPosition() {
-    currentRotation = 15; // Set to the first snap position (15 degrees)
-    rotateZodiac(currentRotation);
-    updateSoulmate();
-}
-
 createZodiacClock();
+updateSoulmate();
 
 let isDragging = false;
 let startAngle = 0;
