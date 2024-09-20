@@ -101,7 +101,7 @@ function addHighlightCircles() {
 
 function updateSoulmate() {
     const rotation = getCurrentRotation();
-    const index = Math.floor((rotation + 15) / 30) % 12;
+    const index = Math.round(rotation / 30) % 12;
     const soulmate = zodiacSigns[index];
     document.getElementById("soulmate-sign").textContent = soulmate;
 }
@@ -117,9 +117,7 @@ function getCurrentRotation() {
 }
 
 function snapToNearestSign(rotation) {
-    const normalizedRotation = (rotation + 360) % 360;
-    const snappedRotation = Math.round(normalizedRotation / 30) * 30;
-    return snappedRotation;
+    return Math.round(rotation / 30) * 30;
 }
 
 createZodiacClock();
@@ -144,23 +142,21 @@ function onMouseMove(event) {
     const centerY = rect.height / 2;
     const angle = Math.atan2(event.clientY - rect.top - centerY, event.clientX - rect.left - centerX);
     const rotation = ((angle - startAngle) * 180 / Math.PI + currentRotation + 360) % 360;
-    rotateZodiac(rotation, false);
+    rotateZodiac(rotation);
 }
 
 function onMouseUp() {
     if (!isDragging) return;
     isDragging = false;
-    const currentRotation = getCurrentRotation();
-    const snappedRotation = snapToNearestSign(currentRotation);
-    rotateZodiac(snappedRotation, true);
+    currentRotation = snapToNearestSign(getCurrentRotation());
+    rotateZodiac(currentRotation);
     updateSoulmate();
 }
 
-function rotateZodiac(rotation, snap = false) {
+function rotateZodiac(rotation) {
     const slices = document.getElementById("zodiac-slices");
-    slices.style.transition = snap ? 'transform 0.3s ease-out' : 'none';
+    slices.style.transition = isDragging ? 'none' : 'transform 0.3s ease-out';
     slices.style.transform = `rotate(${rotation}deg)`;
-    currentRotation = rotation;
 }
 
 svg.addEventListener("mousedown", onMouseDown);
