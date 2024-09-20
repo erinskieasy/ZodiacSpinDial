@@ -129,27 +129,33 @@ let currentRotation = 0;
 function onMouseDown(event) {
     isDragging = true;
     const rect = svg.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    startAngle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    startAngle = Math.atan2(event.clientY - rect.top - centerY, event.clientX - rect.left - centerX);
 }
 
 function onMouseMove(event) {
     if (!isDragging) return;
     const rect = svg.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const angle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const angle = Math.atan2(event.clientY - rect.top - centerY, event.clientX - rect.left - centerX);
     const rotation = ((angle - startAngle) * 180 / Math.PI + currentRotation + 360) % 360;
-    document.getElementById("zodiac-slices").setAttribute("transform", `rotate(${rotation} ${centerX} ${centerY})`);
+    rotateZodiac(rotation);
 }
 
 function onMouseUp() {
     if (!isDragging) return;
     isDragging = false;
     currentRotation = snapToNearestSign(getCurrentRotation());
-    document.getElementById("zodiac-slices").setAttribute("transform", `rotate(${currentRotation} ${centerX} ${centerY})`);
+    rotateZodiac(currentRotation);
     updateSoulmate();
+}
+
+function rotateZodiac(rotation) {
+    const slices = document.getElementById("zodiac-slices");
+    slices.style.transition = isDragging ? 'none' : 'transform 0.3s ease-out';
+    slices.style.transform = `rotate(${rotation}deg)`;
 }
 
 svg.addEventListener("mousedown", onMouseDown);
