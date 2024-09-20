@@ -29,9 +29,15 @@ function createZodiacClock() {
     sliceGroup.style.transformOrigin = `${centerX}px ${centerY}px`;
     svg.appendChild(sliceGroup);
 
+    const textGroup = document.createElementNS(svgNS, "g");
+    textGroup.setAttribute("id", "zodiac-texts");
+    textGroup.style.transformOrigin = `${centerX}px ${centerY}px`;
+    svg.appendChild(textGroup);
+
     zodiacSigns.forEach((sign, index) => {
-        const slice = createZodiacSlice(sign, index);
+        const [slice, text] = createZodiacSlice(sign, index);
         sliceGroup.appendChild(slice);
+        textGroup.appendChild(text);
     });
 
     addHighlightCircles();
@@ -45,19 +51,19 @@ function createZodiacSlice(sign, index) {
     const endX = centerX + radius * Math.cos(endAngle * Math.PI / 180);
     const endY = centerY + radius * Math.sin(endAngle * Math.PI / 180);
 
-    const slice = document.createElementNS(svgNS, "g");
+    const slice = document.createElementNS(svgNS, "path");
+    slice.setAttribute("d", `M${centerX},${centerY} L${startX},${startY} A${radius},${radius} 0 0,1 ${endX},${endY} Z`);
+    slice.setAttribute("fill", `hsl(${index * 30}, 70%, 80%)`);
+    slice.setAttribute("stroke", "#000");
+    slice.setAttribute("stroke-width", "1");
     slice.setAttribute("class", "zodiac-slice");
-
-    const path = document.createElementNS(svgNS, "path");
-    path.setAttribute("d", `M${centerX},${centerY} L${startX},${startY} A${radius},${radius} 0 0,1 ${endX},${endY} Z`);
-    path.setAttribute("fill", `hsl(${index * 30}, 70%, 80%)`);
-    path.setAttribute("stroke", "#000");
-    path.setAttribute("stroke-width", "1");
-    slice.appendChild(path);
 
     const textAngle = angle + 15;
     const textX = centerX + (radius * 0.7) * Math.cos(textAngle * Math.PI / 180);
     const textY = centerY + (radius * 0.7) * Math.sin(textAngle * Math.PI / 180);
+
+    const textGroup = document.createElementNS(svgNS, "g");
+    textGroup.setAttribute("transform", `rotate(${textAngle}, ${textX}, ${textY})`);
 
     const text = document.createElementNS(svgNS, "text");
     text.setAttribute("x", textX);
@@ -66,7 +72,7 @@ function createZodiacSlice(sign, index) {
     text.setAttribute("dominant-baseline", "middle");
     text.setAttribute("font-size", "12");
     text.textContent = sign;
-    slice.appendChild(text);
+    textGroup.appendChild(text);
 
     const symbolX = centerX + (radius * 0.85) * Math.cos(textAngle * Math.PI / 180);
     const symbolY = centerY + (radius * 0.85) * Math.sin(textAngle * Math.PI / 180);
@@ -78,9 +84,9 @@ function createZodiacSlice(sign, index) {
     symbol.setAttribute("dominant-baseline", "middle");
     symbol.setAttribute("font-size", "20");
     symbol.textContent = zodiacSymbols[sign];
-    slice.appendChild(symbol);
+    textGroup.appendChild(symbol);
 
-    return slice;
+    return [slice, textGroup];
 }
 
 function addHighlightCircles() {
@@ -155,8 +161,11 @@ function onMouseUp() {
 
 function rotateZodiac(rotation) {
     const slices = document.getElementById("zodiac-slices");
+    const texts = document.getElementById("zodiac-texts");
     slices.style.transition = isDragging ? 'none' : 'transform 0.3s ease-out';
+    texts.style.transition = isDragging ? 'none' : 'transform 0.3s ease-out';
     slices.style.transform = `rotate(${rotation}deg)`;
+    texts.style.transform = `rotate(${-rotation}deg)`;
 }
 
 svg.addEventListener("mousedown", onMouseDown);
