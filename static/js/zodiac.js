@@ -117,7 +117,8 @@ function getCurrentRotation() {
 }
 
 function snapToNearestSign(rotation) {
-    return Math.round(rotation / 30) * 30;
+    const snappedRotation = Math.round(rotation / 30) * 30;
+    return snappedRotation;
 }
 
 createZodiacClock();
@@ -148,15 +149,19 @@ function onMouseMove(event) {
 function onMouseUp() {
     if (!isDragging) return;
     isDragging = false;
-    currentRotation = snapToNearestSign(getCurrentRotation());
-    rotateZodiac(currentRotation);
+    const currentRotation = getCurrentRotation();
+    const snappedRotation = snapToNearestSign(currentRotation);
+    rotateZodiac(snappedRotation, true);
     updateSoulmate();
 }
 
-function rotateZodiac(rotation) {
+function rotateZodiac(rotation, snap = false) {
     const slices = document.getElementById("zodiac-slices");
-    slices.style.transition = isDragging ? 'none' : 'transform 0.3s ease-out';
+    slices.style.transition = snap ? 'transform 0.3s ease-out' : 'none';
     slices.style.transform = `rotate(${rotation}deg)`;
+    if (snap) {
+        currentRotation = rotation;
+    }
 }
 
 svg.addEventListener("mousedown", onMouseDown);
