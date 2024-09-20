@@ -180,9 +180,11 @@ function rotateZodiac(rotation) {
     slices.style.transition = isDragging ? 'none' : 'transform 0.3s ease-out';
     slices.style.transform = `rotate(${rotation}deg)`;
     
-    // Rotate zodiac symbols in the opposite direction to keep them upright
     const symbols = document.querySelectorAll('.zodiac-symbol');
     symbols.forEach(symbol => {
+        const symbolX = parseFloat(symbol.getAttribute('x'));
+        const symbolY = parseFloat(symbol.getAttribute('y'));
+        symbol.style.transformOrigin = `${symbolX}px ${symbolY}px`;
         symbol.style.transform = `rotate(${-rotation}deg)`;
     });
 }
@@ -191,7 +193,6 @@ svg.addEventListener("mousedown", onMouseDown);
 document.addEventListener("mousemove", onMouseMove);
 document.addEventListener("mouseup", onMouseUp);
 
-// Touch events
 svg.addEventListener("touchstart", (event) => {
     event.preventDefault();
     onMouseDown(event.touches[0]);
@@ -207,7 +208,6 @@ document.addEventListener("touchend", (event) => {
     onMouseUp();
 });
 
-// Modified function to toggle purple circles
 function togglePurpleCircles() {
     const purpleCircles = document.querySelectorAll('.purple-circle');
     let isVisible = purpleCircles[0].getAttribute('visibility') !== 'hidden';
@@ -221,7 +221,6 @@ function togglePurpleCircles() {
     });
 }
 
-// Add event listener for the Mischievous Siblings button
 document.addEventListener('DOMContentLoaded', () => {
     const mischievousSiblingsBtn = document.getElementById('mischievous-siblings-btn');
     mischievousSiblingsBtn.addEventListener('click', togglePurpleCircles);
