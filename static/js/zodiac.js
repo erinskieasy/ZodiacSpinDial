@@ -80,7 +80,7 @@ function createZodiacSlice(sign, index) {
     symbol.setAttribute("font-size", "20");
     symbol.textContent = zodiacSymbols[sign];
     symbol.setAttribute("class", "zodiac-symbol");
-    symbol.style.transformOrigin = `${symbolX}px ${symbolY}px`;
+    symbol.setAttribute("data-original-angle", angle);
     slice.appendChild(symbol);
 
     return slice;
@@ -155,6 +155,13 @@ function onMouseDown(event) {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     startAngle = Math.atan2(event.clientY - rect.top - centerY, event.clientX - rect.left - centerX);
+    
+    // Set initial rotation for symbols
+    const symbols = document.querySelectorAll('.zodiac-symbol');
+    symbols.forEach(symbol => {
+        const originalAngle = parseFloat(symbol.getAttribute('data-original-angle'));
+        symbol.setAttribute('data-start-rotation', -currentRotation - originalAngle);
+    });
 }
 
 function onMouseMove(event) {
@@ -182,10 +189,9 @@ function rotateZodiac(rotation) {
     
     const symbols = document.querySelectorAll('.zodiac-symbol');
     symbols.forEach(symbol => {
-        const symbolX = parseFloat(symbol.getAttribute('x'));
-        const symbolY = parseFloat(symbol.getAttribute('y'));
-        symbol.style.transformOrigin = `${symbolX}px ${symbolY}px`;
-        symbol.style.transform = `rotate(${-rotation}deg)`;
+        const startRotation = parseFloat(symbol.getAttribute('data-start-rotation'));
+        const symbolRotation = startRotation + rotation;
+        symbol.style.transform = `rotate(${symbolRotation}deg)`;
     });
 }
 
