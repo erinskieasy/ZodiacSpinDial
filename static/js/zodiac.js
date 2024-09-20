@@ -101,7 +101,7 @@ function addHighlightCircles() {
 
 function updateSoulmate() {
     const rotation = getCurrentRotation();
-    const index = Math.round(rotation / 30) % 12;
+    const index = Math.floor(((rotation + 15) % 360) / 30);
     const soulmate = zodiacSigns[index];
     document.getElementById("soulmate-sign").textContent = soulmate;
 }
@@ -117,7 +117,7 @@ function getCurrentRotation() {
 }
 
 function snapToNearestSign(rotation) {
-    return Math.round(rotation / 30) * 30;
+    return Math.round((rotation - 15) / 30) * 30 + 15;
 }
 
 createZodiacClock();
