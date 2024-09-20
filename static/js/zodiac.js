@@ -114,6 +114,7 @@ function addPurpleCircles() {
         circle.setAttribute("fill", "rgba(128, 0, 128, 0.2)");
         circle.setAttribute("stroke", "#800080");
         circle.setAttribute("stroke-width", "2");
+        circle.setAttribute("class", "purple-circle");
         svg.appendChild(circle);
     });
 }
@@ -196,4 +197,18 @@ document.addEventListener("touchmove", (event) => {
 document.addEventListener("touchend", (event) => {
     event.preventDefault();
     onMouseUp();
+});
+
+// Add new function to toggle purple circles
+function togglePurpleCircles() {
+    const purpleCircles = document.querySelectorAll('.purple-circle');
+    purpleCircles.forEach(circle => {
+        circle.style.display = circle.style.display === 'none' ? '' : 'none';
+    });
+}
+
+// Add event listener for the Mischievous Siblings button
+document.addEventListener('DOMContentLoaded', () => {
+    const mischievousSiblingsBtn = document.getElementById('mischievous-siblings-btn');
+    mischievousSiblingsBtn.addEventListener('click', togglePurpleCircles);
 });
