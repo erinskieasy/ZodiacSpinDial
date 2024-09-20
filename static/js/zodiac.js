@@ -84,16 +84,15 @@ function createZodiacSlice(sign, index) {
 }
 
 function addHighlightCircles() {
-    const highlightPositions = [2, 4, 6, 8, 10];
-    highlightPositions.forEach(position => {
-        const angle = (position * 30) - 90;
-        const x = centerX + (radius * 0.9) * Math.cos(angle * Math.PI / 180);
-        const y = centerY + (radius * 0.9) * Math.sin(angle * Math.PI / 180);
+    zodiacSigns.forEach((_, index) => {
+        const angle = (index * 30) - 75; // Adjust angle to center the circle on the symbol
+        const x = centerX + (radius * 0.85) * Math.cos(angle * Math.PI / 180);
+        const y = centerY + (radius * 0.85) * Math.sin(angle * Math.PI / 180);
 
         const circle = document.createElementNS(svgNS, "circle");
         circle.setAttribute("cx", x);
         circle.setAttribute("cy", y);
-        circle.setAttribute("r", 15);
+        circle.setAttribute("r", 18); // Increased radius to cover the symbol
         circle.setAttribute("class", "highlight-circle");
         svg.appendChild(circle);
     });
