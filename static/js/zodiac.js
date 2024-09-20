@@ -144,7 +144,7 @@ function onMouseMove(event) {
     const centerY = rect.height / 2;
     const angle = Math.atan2(event.clientY - rect.top - centerY, event.clientX - rect.left - centerX);
     const rotation = ((angle - startAngle) * 180 / Math.PI + currentRotation + 360) % 360;
-    rotateZodiac(rotation);
+    rotateZodiac(rotation, false);
 }
 
 function onMouseUp() {
