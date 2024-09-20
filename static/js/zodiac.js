@@ -35,6 +35,7 @@ function createZodiacClock() {
     });
 
     addHighlightCircles();
+    addPurpleCircles();
 }
 
 function createZodiacSlice(sign, index) {
@@ -95,6 +96,24 @@ function addHighlightCircles() {
         circle.setAttribute("cy", y);
         circle.setAttribute("r", 15);
         circle.setAttribute("class", "highlight-circle");
+        svg.appendChild(circle);
+    });
+}
+
+function addPurpleCircles() {
+    const purplePositions = [1, 5, 7, 11];
+    purplePositions.forEach(position => {
+        const angle = (position * 30) - 90;
+        const x = centerX + (radius * 0.85) * Math.cos(angle * Math.PI / 180);
+        const y = centerY + (radius * 0.85) * Math.sin(angle * Math.PI / 180);
+
+        const circle = document.createElementNS(svgNS, "circle");
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+        circle.setAttribute("r", 15);
+        circle.setAttribute("fill", "rgba(128, 0, 128, 0.2)");
+        circle.setAttribute("stroke", "#800080");
+        circle.setAttribute("stroke-width", "2");
         svg.appendChild(circle);
     });
 }
